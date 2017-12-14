@@ -69,6 +69,7 @@ int ShuffleChannel_arm::forward(const Mat &bottom_blob, Mat &top_blob) const
                 src_p += 4;
             }
 #else
+            int _nn = nn;
             asm volatile(
                         "veor       q1, q0, q0          \n"
                         "0:                             \n"
@@ -78,10 +79,10 @@ int ShuffleChannel_arm::forward(const Mat &bottom_blob, Mat &top_blob) const
                         "subs       %0, #1              \n"
                         "vst1.f32   {d0-d1}, [%1 :128]! \n"
                         "bne        0b                  \n"
-                        : "=r"(nn),     // %0
-                        "=r"(ptr)     // %1
-                        : "0"(nn),
-                        "1"(ptr)
+                        : "=r"(_nn),     // %0
+                          "=r"(ptr)      // %1
+                        : "0"(_nn),
+                          "1"(ptr)
                         : "cc", "memory", "q0", "q1"
                         );
 #endif // __aarch64__
