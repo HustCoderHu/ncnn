@@ -75,14 +75,15 @@ int ShuffleChannel_arm::forward(const Mat &bottom_blob, Mat &top_blob) const
                         "0:                             \n"
                         "pld        [%1, #128]          \n"
                         "vld1.f32   {d0-d1}, [%1 :128]  \n"
-                        "vmax.f32   q0, q0, q1          \n"
                         "subs       %0, #1              \n"
-                        "vst1.f32   {d0-d1}, [%1 :128]! \n"
+                        "vst1.f32   {d0-d1}, [%2 :128]! \n"
                         "bne        0b                  \n"
                         : "=r"(_nn),     // %0
-                          "=r"(ptr)      // %1
+                          "r"(src_p),   // %1
+                          "=r"(dst_p)    // %2
                         : "0"(_nn),
-                          "1"(ptr)
+                          "1"(src_p),
+                          "2"(dst_p)
                         : "cc", "memory", "q0", "q1"
                         );
 #endif // __aarch64__
