@@ -1,4 +1,3 @@
-
 if(CMAKE_TOOLCHAIN_FILE)
 set(LIBRARY_OUTPUT_PATH_ROOT ${CMAKE_BINARY_DIR} CACHE PATH "root for library output, set this to change where android libs are compiled to")
 # get absolute path, but get_filename_component ABSOLUTE only refer with source dir, so find_file here :(
@@ -19,6 +18,11 @@ cmake_minimum_required(VERSION 2.8.10)
 # set(CMAKE_BUILD_TYPE debug)
 # set(CMAKE_BUILD_TYPE relwithdebinfo)
 set(CMAKE_BUILD_TYPE release)
+
+set(CMAKE_C_COMPILER "gcc")
+set(CMAKE_CXX_COMPILER "g++")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/modules/")
+
 
 option(NCNN_OPENMP "openmp support" ON)
 option(NCNN_STDIO "load model from external file" ON)
@@ -57,7 +61,7 @@ endif()
 
 ##############################################
 
-# add_subdirectory(examples)
+add_subdirectory(examples)
 add_subdirectory(src)
 if(NOT ANDROID AND NOT IOS)
 add_subdirectory(tools)
